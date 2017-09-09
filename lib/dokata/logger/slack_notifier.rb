@@ -47,7 +47,7 @@ module Dokata
       # @return [Boolean] 含まれるか
       def is_logging?(logger_level, config_level)
         levels = %i(debug info warn error)
-        levels.include?(config_level) && levels.from(levels.index(config_level)).include?(logger_level)
+        levels.include?(config_level.to_sym) && levels.from(levels.index(config_level.to_sym)).include?(logger_level)
       end
 
     end
