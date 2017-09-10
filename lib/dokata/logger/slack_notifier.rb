@@ -8,8 +8,8 @@ module Dokata
     # slack通知をまとめてる。
     class SlackNotifier
 
-      def initialize(setting)
-        @setting = setting
+      def initialize(config)
+        @config = config
       end
 
       # infoに相当するslack通知
@@ -31,12 +31,12 @@ module Dokata
       private
 
       def post_message(message, color, logger_level)
-        if @setting[:channel].present? && is_logging?(logger_level, @setting[:level])
+        if @config[:channel].present? && is_logging?(logger_level, @config[:level])
           options = {
-              channel: @setting[:channel],
-              attachments: [{color: color, title: @setting[:title], text: message}],
+              channel: @config[:channel],
+              attachments: [{color: color, title: @config[:title], text: message}],
           }
-          slack_client = Slack::Web::Client.new({token: @setting[:token]})
+          slack_client = Slack::Web::Client.new({token: @config[:token]})
           slack_client.chat_postMessage(options)
         end
       end
