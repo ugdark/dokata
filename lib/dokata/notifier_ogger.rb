@@ -6,15 +6,15 @@ require_relative 'logger/slack_notifier'
 module Dokata
 
   # 複数のlogや通知をまとめて扱える。
-  class Logger
+  class NotifierLogger
 
     def initialize(config)
-      @loggers = config[:loggers].map do |value|
-        SimpleLogger.new(value)
+      @loggers = config[:loggers].map do |key, value|
+        Dokata::Logger::SimpleLogger.new(value)
       end
 
-      @slacks = config[:slacks].map do |value|
-        SlackNotifier.new(value)
+      @slacks = config[:slacks].map do |key, value|
+        Dokata::Logger::SlackNotifier.new(value)
       end
     end
 

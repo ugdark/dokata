@@ -1,6 +1,6 @@
 require 'dokata/version'
 require 'dokata/extend'
-require 'dokata/logger'
+require 'dokata/notifier_ogger'
 
 module Dokata
 end
