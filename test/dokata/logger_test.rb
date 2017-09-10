@@ -4,7 +4,7 @@ require_relative '../../test_helper'
 
 require 'dokata/logger/slack_notifier'
 
-class TestSlackNotifirer < Test::Unit::TestCase
+class TestSimpleLogger < Test::Unit::TestCase
 
   sub_test_case '' do
     # testではなくexample
