@@ -39,7 +39,7 @@ class TestSimpleLogger < Test::Unit::TestCase
             logdev: log_file_path,
             shift_age: 'daily',
             level: 'info',
-            max_history: 0
+            max_history: 0,
         }
 
         FileUtils.touch(log_file_path)
@@ -62,7 +62,7 @@ class TestSimpleLogger < Test::Unit::TestCase
             logdev: log_file_path,
             shift_age: 'daily',
             level: 'info',
-            max_history: 3
+            max_history: 3,
         }
 
         FileUtils.touch("#{log_file_path}.#{Date.today.prev_day(1).strftime('%Y%m%d')}")
@@ -77,6 +77,49 @@ class TestSimpleLogger < Test::Unit::TestCase
       end
     end
 
+    test 'error時にexceptionをdumpできるか' do
+      Dir.mktmpdir do |dir|
+        log_file_path = "#{dir}/test.log"
+        config = {
+            logdev: log_file_path,
+            shift_age: 'daily',
+            level: 'info',
+            max_history: 0,
+        }
+
+        logger = Dokata::Logger::SimpleLogger.new(config)
+
+        begin
+          raise StandardError.new('sample')
+        rescue StandardError => e
+          logger.error('error', e)
+        end
+
+        value = File.read(log_file_path).count('\n') >= 10
+        assert_equal true, value
+      end
+    end
+
+    test '標準出力できるか' do
+      config = {
+          logdev: 'stdout',
+          level: 'info',
+      }
+
+      begin
+        # 標準出力を StringIO オブジェクトにすり替える
+        $stdout = StringIO.new
+        logger = Dokata::Logger::SimpleLogger.new(config)
+        logger.info('test')
+        output = $stdout.string # 出力結果の取得
+        value = output.include?('INFO')
+        assert_equal true, value
+
+      ensure
+        $stdout = STDOUT # 元に戻す
+      end
+
+    end
   end
 end
 

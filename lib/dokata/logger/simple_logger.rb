@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+
+require 'active_support'
+require 'active_support/core_ext'
+
 # TODO:ruby 2.4.1移行なら loggerにしてbasic_loggerを削除
 require_relative 'basic_logger'
 
@@ -9,7 +13,17 @@ module Dokata
     class SimpleLogger
 
       def initialize(config)
-        @logger = BasicLogger.new(config[:logdev], config[:shift_age])
+        logdev =
+            case config[:logdev].downcase
+              when 'stdout'
+                $stdout
+              when 'stderr'
+                $stderr
+              else
+                config[:logdev]
+            end
+
+        @logger = BasicLogger.new(logdev, config[:shift_age])
         @logger.level = config[:level]
         rotation(config[:logdev], config[:max_history])
       end
@@ -26,8 +40,11 @@ module Dokata
         @logger.warn(message)
       end
 
-      def error(message)
-        @logger.warn(message)
+      def error(message, exception=nil)
+        @logger.error(message)
+        if exception.present? && exception.backtrace.present?
+          @logger.error(exception.backtrace.join("\n"))
+        end
       end
 
       private

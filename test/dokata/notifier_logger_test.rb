@@ -2,9 +2,9 @@
 
 require_relative '../test_helper'
 
-require 'dokata/notifier_ogger'
+require 'dokata/notifier_logger'
 
-class TestLogger < Test::Unit::TestCase
+class TestNotifierLogger < Test::Unit::TestCase
 
   sub_test_case '' do
 
