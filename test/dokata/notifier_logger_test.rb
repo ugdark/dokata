@@ -49,6 +49,12 @@ class TestNotifierLogger < Test::Unit::TestCase
       end
     end
 
+    test '空対応' do
+      config = {}
+      logger = Dokata::NotifierLogger.new(config)
+      assert_not_nil logger
+    end
+
   end
 end
 
