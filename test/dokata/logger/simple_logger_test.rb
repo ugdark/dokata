@@ -118,8 +118,38 @@ class TestSimpleLogger < Test::Unit::TestCase
       ensure
         $stdout = STDOUT # 元に戻す
       end
+    end
+
+    test '２つできるか' do
+      Dir.mktmpdir do |dir|
+        config = {
+            logdev: "#{dir}/test.log",
+            shift_age: 'daily',
+            level: 'info',
+            max_history: 0,
+        }
+
+        logger = Dokata::Logger::SimpleLogger.new(config)
+
+        config2 = {
+            logdev: "#{dir}/test2.log",
+            shift_age: 'daily',
+            level: 'info',
+            max_history: 0,
+        }
+
+        logger2 = Dokata::Logger::SimpleLogger.new(config2)
+
+        logger.info('test')
+        logger2.info('test')
+        value = File.exist?("#{config[:logdev]}")
+        assert_equal true, value
+        value2 = File.exist?("#{config2[:logdev]}")
+        assert_equal true, value2
+      end
 
     end
+
   end
 end
 

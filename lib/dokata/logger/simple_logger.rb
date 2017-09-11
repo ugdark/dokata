@@ -25,7 +25,9 @@ module Dokata
 
         @logger = BasicLogger.new(logdev, config[:shift_age])
         @logger.level = config[:level]
-        rotation(config[:logdev], config[:max_history])
+        if config[:shift_age] == 'daily' && File.exist?(logdev)
+          rotation(logdev, config[:max_history])
+        end
       end
 
       def debug(message)
@@ -58,8 +60,7 @@ module Dokata
           date = Date.today.prev_day(i)
           "#{file_path}.#{date.strftime('%Y%m%d')}"
         }
-        allow_filenames.unshift(file_path)
-        Dir.glob("#{File.dirname(file_path)}/*").each do |target_file_path|
+        Dir.glob("#{File.dirname(file_path)}/#{File.basename(file_path)}.*").each do |target_file_path|
           unless allow_filenames.include?(target_file_path)
             File.delete(target_file_path)
           end
