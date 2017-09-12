@@ -47,3 +47,15 @@ The gem is available as open source under the terms of the [MIT License](http://
 ## Code of Conduct
 
 Everyone interacting in the Dokata project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/dokata/blob/master/CODE_OF_CONDUCT.md).
+
+## 参考
+
+### RuboCop
+※　作成中
+```bash
+bundle exe rubocop --auto-gen-config
+```
+
+- 参考URL
+  - [RuboCop でコーディングスタイルを矯正する](http://momota.github.io/blog/2016/06/17/rubocop/)
+  - [RuboCop](https://plugins.jetbrains.com/plugin/7604-rubocop)
