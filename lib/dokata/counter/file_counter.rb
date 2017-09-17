@@ -29,13 +29,15 @@ module Dokata
       def inc
         count = current
         File.open("#{@file_path}", 'w') do |file|
-          file.puts(count+1)
+          file.puts(count + 1)
         end
       end
 
       # count clear
       def clear
-        File.delete("#{@file_path}")
+        if FileTest.exist?("#{@file_path}")
+          File.delete("#{@file_path}")
+        end
       end
 
     end

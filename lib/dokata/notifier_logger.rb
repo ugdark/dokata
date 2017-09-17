@@ -46,8 +46,8 @@ module Dokata
       @slacks.each { |slack| slack.warn_message(message) }
     end
 
-    def error(message)
-      @loggers.each { |logger| logger.error(message) }
+    def error(message, exception)
+      @loggers.each { |logger| logger.error(message, exception) }
       @loggers.each { |logger| logger.danger_message(message) }
     end
   end

@@ -22,6 +22,17 @@ class TestFilreCounter < Test::Unit::TestCase
       end
     end
 
+    test '削除のみ' do
+      Dir.mktmpdir do |dir|
+        file_path = "#{dir}/.count"
+        counter = Dokata::Counter::FileCounter.new(file_path)
+
+        value = counter.clear
+        assert_nil value
+
+      end
+    end
+
   end
 end
 

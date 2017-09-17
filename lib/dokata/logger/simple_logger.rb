@@ -25,7 +25,7 @@ module Dokata
 
         @logger = BasicLogger.new(logdev, config[:shift_age])
         @logger.level = config[:level]
-        if config[:shift_age] == 'daily' && File.exist?(logdev)
+        if config[:shift_age] == 'daily' && File.exist?(config[:logdev])
           rotation(logdev, config[:max_history])
         end
       end
