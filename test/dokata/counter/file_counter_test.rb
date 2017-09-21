@@ -6,7 +6,6 @@ require 'dokata/counter/file_counter'
 require 'tmpdir'
 
 class TestFilreCounter < Test::Unit::TestCase
-
   sub_test_case '' do
     test '基本' do
       Dir.mktmpdir do |dir|
@@ -18,7 +17,6 @@ class TestFilreCounter < Test::Unit::TestCase
         counter.inc
         value = counter.current
         assert_equal 3, value
-
       end
     end
 
@@ -29,12 +27,7 @@ class TestFilreCounter < Test::Unit::TestCase
 
         value = counter.clear
         assert_nil value
-
       end
     end
-
   end
 end
-
-
-

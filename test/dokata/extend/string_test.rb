@@ -9,7 +9,6 @@ class String
 end
 
 class TestStringModule < Test::Unit::TestCase
-
   def test_convert_utf8_to_sjis_正常系
     utf8_text = 'てすと'
     sjis_text = utf8_text.encode('Windows-31J')
@@ -46,7 +45,7 @@ class TestStringModule < Test::Unit::TestCase
   end
 
   def test_replace_escape_正常系
-    data = %w(Unit\\Test Unit/Test Unit:Test Unit*Test Unit?Test Unit"Test Unit<Test Unit>Test Unit|Test Unit\\Test)
+    data = %w[Unit\\Test Unit/Test Unit:Test Unit*Test Unit?Test Unit"Test Unit<Test Unit>Test Unit|Test Unit\\Test]
 
     data.each do |v|
       assert_equal 'UnitTest', v.replace_escape
@@ -56,8 +55,6 @@ class TestStringModule < Test::Unit::TestCase
   def test_strip_to_i_正常系
     text = '¥1,234,567,890.987'
     value = text.strip_to_i
-    assert_equal 1234567890, value
+    assert_equal 1_234_567_890, value
   end
 end
-
-

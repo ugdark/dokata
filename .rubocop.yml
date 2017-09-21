@@ -1,0 +1,13 @@
+AllCops:
+  # 除外するディレクトリ（自動生成されたファイル）
+  # デフォルト設定にある"vendor/**/*"が無効化されないように記述
+  Exclude:
+    - lib/dokata/logger/basic_logger.rb # 外部の取り込みの為
+    - bin/*
+    - test/**/*
+    - 'vendor/**/*'
+
+# 日本語のドキュメントを許可する。
+Style/AsciiComments:
+  StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#english-comments'
+  Enabled: false

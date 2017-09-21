@@ -7,34 +7,26 @@ require 'active_support'
 require 'active_support/core_ext'
 
 module Dokata
-
   # 複数のlogや通知をまとめて扱える。
   class NotifierLogger
-
     def initialize(config)
-
       # TODO: ここ簡略できるはず
       if config[:loggers].nil?
         @loggers = []
       else
-        @loggers = config[:loggers].values.map { |value|
-          unless value.try(:is_disable)
-            Dokata::Logger::SimpleLogger.new(value)
-          end
-        }.compact
+        @loggers = config[:loggers].values.map do |value|
+          Dokata::Logger::SimpleLogger.new(value) unless value.try(:is_disable)
+        end.compact
       end
 
       if config[:slacks].nil?
         @slacks = []
       else
-        @slacks = config[:slacks].values.map { |value|
-          unless value.try(:is_disable)
-            Dokata::Logger::SlackNotifier.new(value)
-          end
-        }.compact
+        @slacks = config[:slacks].values.map do |value|
+          Dokata::Logger::SlackNotifier.new(value) unless value.try(:is_disable)
+        end.compact
       end
     end
-
 
     def debug(message)
       @loggers.each { |logger| logger.debug(message) }
