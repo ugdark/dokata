@@ -17,17 +17,21 @@ module Dokata
       if config[:loggers].nil?
         @loggers = []
       else
-        @loggers = config[:loggers].map do |key, value|
-          Dokata::Logger::SimpleLogger.new(value)
-        end
+        @loggers = config[:loggers].values.map { |value|
+          unless value.try(:is_disable)
+            Dokata::Logger::SimpleLogger.new(value)
+          end
+        }.compact
       end
 
       if config[:slacks].nil?
         @slacks = []
       else
-        @slacks = config[:slacks].map do |key, value|
-          Dokata::Logger::SlackNotifier.new(value)
-        end
+        @slacks = config[:slacks].values.map { |value|
+          unless value.try(:is_disable)
+            Dokata::Logger::SlackNotifier.new(value)
+          end
+        }.compact
       end
     end
 
@@ -46,9 +50,9 @@ module Dokata
       @slacks.each { |slack| slack.warn_message(message) }
     end
 
-    def error(message, exception)
+    def error(message, exception = nil)
       @loggers.each { |logger| logger.error(message, exception) }
-      @loggers.each { |logger| logger.danger_message(message) }
+      @slacks.each { |slack| slack.danger_message(message, exception) }
     end
   end
 end

@@ -42,7 +42,7 @@ module Dokata
         @logger.warn(message)
       end
 
-      def error(message, exception=nil)
+      def error(message, exception = nil)
         @logger.error(message)
         if exception.present? && exception.backtrace.present?
           @logger.error(exception.backtrace.join("\n"))

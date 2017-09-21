@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'active_support'
+require 'active_support/core_ext'
+
 require 'slack-ruby-client'
 
 module Dokata
@@ -14,18 +17,23 @@ module Dokata
 
       # infoに相当するslack通知
       def good_message(message)
-        post_message(message, color = 'good', level = :info)
+        post_message(message, :good, :info)
       end
 
       # warnに相当するslack通知
       def warn_message(message)
-        post_message(message, color = 'warning', level = :warn)
+        post_message(message, :warning, :warn)
       end
 
       # errorに相当するslack通知
       # TODO: Exceptionのdumpも追加予定
-      def danger_message(message)
-        post_message(message, color = 'danger', level = :error)
+      def danger_message(message, exception = nil)
+        if exception.present? && exception.backtrace.present?
+          post_message("#{message}\n\n#{exception.backtrace.join("\n")}", :danger, :error)
+        else
+          post_message(message, :danger, :error)
+        end
+
       end
 
       private
