@@ -11,7 +11,7 @@ module Dokata
   class NotifierLogger
     def initialize(config)
       # TODO: ここ簡略できるはず
-      if config[:loggers].nil?
+      if config[:loggers].blank?
         @loggers = []
       else
         @loggers = config[:loggers].values.map do |value|
@@ -19,7 +19,7 @@ module Dokata
         end.compact
       end
 
-      if config[:slacks].nil?
+      if config[:slacks].blank?
         @slacks = []
       else
         @slacks = config[:slacks].values.map do |value|
