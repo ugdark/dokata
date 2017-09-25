@@ -39,6 +39,8 @@ module Dokata
         if @config[:channel].present? && is_logging?(logger_level, @config[:level])
           options = {
             channel: @config[:channel],
+            username: @config[:username],
+            icon_url: @config[:icon_url],
             attachments: [{ color: color, title: @config[:title], text: message }]
           }
           slack_client = Slack::Web::Client.new(token: @config[:token])
@@ -47,8 +49,8 @@ module Dokata
       end
 
       # ログ判定
-      # @param [String] 対象のlevel
-      # @param [String] 設定のlevel
+      # @param [String] logger_level 対象のlevel
+      # @param [String] config_level 設定のlevel
       # @return [Boolean] 含まれるか
       def is_logging?(logger_level, config_level)
         levels = %i[debug info warn error]
