@@ -16,13 +16,13 @@ class TestNotifierLogger < Test::Unit::TestCase
           slacks: {
             test1: {
               token: '--',
-              cannel: 'test1',
+              channel: 'test1',
               level: 'info',
               title: 'test1title'
             },
             test2: {
               token: '--',
-              cannel: 'test2',
+              channel: 'test2',
               level: 'warn',
               title: 'test2title'
             }

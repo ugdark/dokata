@@ -11,19 +11,17 @@ module Dokata
       end
 
       # count get
+      # @return [Integer] カウント
       def current
         if File.exist?(@file_path.to_s)
-          count = 0
-          File.open(@file_path.to_s) do |file|
-            count = file.read.to_i
-          end
-          count
+          File.open(@file_path.to_s) { |file| file.read.to_i }
         else
           0
         end
       end
 
       # count up
+      # @return [Integer] カウント
       def inc
         count = current
         File.open(@file_path.to_s, 'w') do |file|
