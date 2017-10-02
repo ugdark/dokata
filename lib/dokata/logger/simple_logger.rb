@@ -43,7 +43,8 @@ module Dokata
       def error(message, exception = nil)
         @logger.error(message)
         if exception.present? && exception.backtrace.present?
-          @logger.error(exception.backtrace.join("\n"))
+          template = "#{exception.inspect} \n #{exception.backtrace.join("\n")}"
+          @logger.error(template)
         end
       end
 

@@ -27,7 +27,8 @@ module Dokata
       # TODO: Exceptionのdumpも追加予定
       def danger_message(message, exception = nil)
         if exception.present? && exception.backtrace.present?
-          post_message("#{message}\n\n#{exception.backtrace.join("\n")}", :danger, :error)
+          template = [message, exception.inspect, exception.backtrace.join("\n")]
+          post_message(template.join("\n"), :danger, :error)
         else
           post_message(message, :danger, :error)
         end
