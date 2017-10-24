@@ -41,18 +41,6 @@ class TestSimpleLogger < Test::Unit::TestCase
       assert_nil value
     end
 
-    test 'チャンネルがないならoff' do
-      config = {
-          token: '--',
-          channel: '', # channelを空にすると送信しない。
-          level: 'info',
-          title: 'こんばんわ'
-      }
-      slack = Dokata::Logger::SlackNotifier.new(config)
-      value = slack.good_message('good')
-      assert_nil value
-    end
-
     test '例外の追加' do
       begin
         raise 'test'

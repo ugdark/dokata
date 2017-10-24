@@ -28,8 +28,8 @@ module Dokata
       end
     end
 
-    def debug(message)
-      @loggers.each { |logger| logger.debug(message) }
+    def debug(message, exception = nil)
+      @loggers.each { |logger| logger.debug(message, exception) }
     end
 
     def info(message)
@@ -37,9 +37,9 @@ module Dokata
       @slacks.each { |slack| slack.good_message(message) }
     end
 
-    def warn(message)
-      @loggers.each { |logger| logger.warn(message) }
-      @slacks.each { |slack| slack.warn_message(message) }
+    def warn(message, exception = nil)
+      @loggers.each { |logger| logger.warn(message, exception) }
+      @slacks.each { |slack| slack.warn_message(message, exception) }
     end
 
     def error(message, exception = nil)
