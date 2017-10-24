@@ -28,27 +28,33 @@ module Dokata
         end
       end
 
-      def debug(message)
+      def debug(message, exception = nil)
         @logger.debug(message)
+        logging_exception(exception) { |ex_message| @logger.debug(ex_message) }
       end
 
       def info(message)
         @logger.info(message)
       end
 
-      def warn(message)
+      def warn(message, exception = nil)
         @logger.warn(message)
+        logging_exception(exception) { |ex_message| @logger.warn(ex_message) }
       end
 
       def error(message, exception = nil)
         @logger.error(message)
-        if exception.present? && exception.backtrace.present?
-          template = "#{exception.inspect} \n #{exception.backtrace.join("\n")}"
-          @logger.error(template)
-        end
+        logging_exception(exception) { |ex_message| @logger.error(ex_message) }
       end
 
       private
+
+      def logging_exception(exception = nil)
+        if exception.present? && exception.backtrace.present?
+          template = "#{exception.inspect} \n #{exception.backtrace.join("\n")}"
+          yield template
+        end
+      end
 
       def rotation(file_path, max_history)
         return if max_history.nil?

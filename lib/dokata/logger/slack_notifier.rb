@@ -19,22 +19,30 @@ module Dokata
       end
 
       # warnに相当するslack通知
-      def warn_message(message)
-        post_message(message, :warning, :warn)
+      def warn_message(message, exception = nil)
+        message_with_exception = get_message_with_exception(message, exception)
+        post_message(message_with_exception, :warning, :warn)
       end
 
       # errorに相当するslack通知
-      # TODO: Exceptionのdumpも追加予定
       def danger_message(message, exception = nil)
-        if exception.present? && exception.backtrace.present?
-          template = [message, exception.inspect, exception.backtrace.join("\n")]
-          post_message(template.join("\n"), :danger, :error)
-        else
-          post_message(message, :danger, :error)
-        end
+        message_with_exception = get_message_with_exception(message, exception)
+        post_message(message_with_exception, :danger, :error)
       end
 
       private
+
+      def get_message_with_exception(message, exception = nil)
+        if exception.present? && exception.backtrace.present?
+          %W[
+            #{message}
+            #{exception.inspect}
+            #{exception.backtrace.join("\n")}
+          ].join("\n")
+        else
+          message
+        end
+      end
 
       def post_message(message, color, logger_level)
         if @config[:channel].present? && is_logging?(logger_level, @config[:level])

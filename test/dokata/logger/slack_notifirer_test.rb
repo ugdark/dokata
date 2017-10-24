@@ -11,15 +11,15 @@ class TestSimpleLogger < Test::Unit::TestCase
     # 実際に試すならstubをコメントアウト
     test '基本' do
       config = {
-        token: '---',
-        channel: '--',
-        level: 'info',
-        title: 'こんばんわ'
+          token: '---',
+          channel: '--',
+          level: 'info',
+          title: 'こんばんわ'
       }
       slack = Dokata::Logger::SlackNotifier.new(config)
-      stub(slack).good_message { { 'ok' => true } }
-      stub(slack).warn_message { { 'ok' => true } }
-      stub(slack).danger_message { { 'ok' => true } }
+      stub(slack).good_message {{'ok' => true}}
+      stub(slack).warn_message {{'ok' => true}}
+      stub(slack).danger_message {{'ok' => true}}
 
       good = slack.good_message('good')
       assert_equal true, good['ok']
@@ -31,14 +31,44 @@ class TestSimpleLogger < Test::Unit::TestCase
 
     test 'チャンネルがないならoff' do
       config = {
-        token: '--',
-        channel: '', # channelを空にすると送信しない。
-        level: 'info',
-        title: 'こんばんわ'
+          token: '--',
+          channel: '', # channelを空にすると送信しない。
+          level: 'info',
+          title: 'こんばんわ'
       }
       slack = Dokata::Logger::SlackNotifier.new(config)
       value = slack.good_message('good')
       assert_nil value
     end
+
+    test 'チャンネルがないならoff' do
+      config = {
+          token: '--',
+          channel: '', # channelを空にすると送信しない。
+          level: 'info',
+          title: 'こんばんわ'
+      }
+      slack = Dokata::Logger::SlackNotifier.new(config)
+      value = slack.good_message('good')
+      assert_nil value
+    end
+
+    test '例外の追加' do
+      begin
+        raise 'test'
+      rescue => e
+        exception = e
+      end
+      config = {
+          token: '---',
+          channel: '--',
+          level: 'info',
+          title: 'こんばんわ'
+      }
+      slack = Dokata::Logger::SlackNotifier.new(config)
+      value = slack.send(:get_message_with_exception, 'test', exception)
+      assert_not_nil value
+    end
+
   end
 end
