@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dokata/version'
 require 'dokata/extend'
 require 'dokata/counter'
