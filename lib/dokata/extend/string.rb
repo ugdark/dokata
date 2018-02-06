@@ -64,3 +64,7 @@ module Dokata
     end
   end
 end
+
+class String
+  include Dokata::Extend::String
+end

@@ -7,10 +7,9 @@ ETL作業などの共通ライブラリ
 
 ## Installation
 
-ruby version: 2.5.0 
+ruby version: 2.5.0
 
 Add this line to your application's Gemfile:
-
 ```ruby
 gem 'dokata'
 ```

@@ -15,8 +15,6 @@ Gem::Specification.new do |spec|
   spec.homepage = 'http://localhost'
   spec.license = 'MIT'
 
-  spec.add_dependency 'activesupport'
-  spec.add_dependency 'config'
   spec.add_dependency 'slack-ruby-client'
 
   spec.add_development_dependency 'bundler'

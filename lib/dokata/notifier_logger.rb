@@ -3,29 +3,17 @@
 require_relative 'logger/simple_logger'
 require_relative 'logger/slack_notifier'
 
-require 'active_support'
-require 'active_support/core_ext'
-
 module Dokata
   # 複数のlogや通知をまとめて扱える。
   class NotifierLogger
-    def initialize(config)
-      # TODO: ここ簡略できるはず
-      if config[:loggers].blank?
-        @loggers = []
-      else
-        @loggers = config[:loggers].values.map do |value|
-          Dokata::Logger::SimpleLogger.new(value) unless value.try(:is_disable)
-        end.compact
-      end
+    def initialize(**options)
+      @loggers = options.fetch(:loggers, {}).values.map do |value|
+        Dokata::Logger::SimpleLogger.new(value) unless value.try(:is_disable)
+      end.compact
 
-      if config[:slacks].blank?
-        @slacks = []
-      else
-        @slacks = config[:slacks].values.map do |value|
-          Dokata::Logger::SlackNotifier.new(value) unless value.try(:is_disable)
-        end.compact
-      end
+      @notices = options.fetch(:loggers, {}).values.map do |value|
+        Dokata::Logger::SlackNotifier.new(value) unless value.try(:is_disable)
+      end.compact
     end
 
     def debug(message, exception = nil)
@@ -34,17 +22,17 @@ module Dokata
 
     def info(message)
       @loggers.each { |logger| logger.info(message) }
-      @slacks.each { |slack| slack.good_message(message) }
+      @notices.each { |slack| slack.good_message(message) }
     end
 
     def warn(message, exception = nil)
       @loggers.each { |logger| logger.warn(message, exception) }
-      @slacks.each { |slack| slack.warn_message(message, exception) }
+      @notices.each { |slack| slack.warn_message(message, exception) }
     end
 
     def error(message, exception = nil)
       @loggers.each { |logger| logger.error(message, exception) }
-      @slacks.each { |slack| slack.danger_message(message, exception) }
+      @notices.each { |slack| slack.danger_message(message, exception) }
     end
   end
 end

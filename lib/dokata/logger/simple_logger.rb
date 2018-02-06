@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
-require 'active_support'
-require 'active_support/core_ext'
-
-# TODO: ruby 2.4.1移行なら loggerにしてbasic_loggerを削除
-require_relative 'basic_logger'
+require 'logger'
 
 module Dokata
   module Logger
@@ -21,7 +17,7 @@ module Dokata
             config[:logdev]
           end
 
-        @logger = BasicLogger.new(logdev, config[:shift_age])
+        @logger = ::Logger.new(logdev, config[:shift_age])
         @logger.level = config[:level]
         if config[:shift_age] == 'daily' && File.exist?(config[:logdev])
           rotation(logdev, config[:max_history])
@@ -50,7 +46,7 @@ module Dokata
       private
 
       def logging_exception(exception = nil)
-        if exception.present? && exception.backtrace.present?
+        if exception.nil? == false && exception.backtrace.nil? == false
           template = "#{exception.inspect} \n #{exception.backtrace.join("\n")}"
           yield template
         end
