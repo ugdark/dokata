@@ -4,23 +4,22 @@ require 'logger'
 
 module Dokata
   module Logger
-    # loggerをまとめてる。
+    # loggerをラップしてる。
     class SimpleLogger
-      def initialize(config)
+      def initialize(**options)
         logdev =
-          case config[:logdev].downcase
+          case options[:logdev].downcase
           when 'stdout'
             $stdout
           when 'stderr'
             $stderr
           else
-            config[:logdev]
+            options[:logdev]
           end
 
-        @logger = ::Logger.new(logdev, config[:shift_age])
-        @logger.level = config[:level]
-        if config[:shift_age] == 'daily' && File.exist?(config[:logdev])
-          rotation(logdev, config[:max_history])
+        @logger = ::Logger.new(logdev, options[:shift_age], level:options[:level])
+        if options[:shift_age] == 'daily' && File.exist?(options[:logdev])
+          rotation(logdev, options[:max_history])
         end
       end
 
